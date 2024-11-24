@@ -17,7 +17,7 @@ public class FacultyController {
     }
 
     @PostMapping("/create")
-    public Long create(@RequestBody Faculty faculty) {
+    public Faculty create(@RequestBody Faculty faculty) {
         return facultyService.create(faculty);
     }
 
@@ -43,7 +43,7 @@ public class FacultyController {
     }
 
     @GetMapping("/filterByColor")
-    public HashMap<Long, Faculty> filterByAge(@RequestParam("color") String color) {
+    public Collection<Faculty> filterByAge(@RequestParam("color") String color) {
         return facultyService.filterByColor(color);
     }
 }

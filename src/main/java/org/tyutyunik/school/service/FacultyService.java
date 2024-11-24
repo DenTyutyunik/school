@@ -14,7 +14,7 @@ public interface FacultyService {
      * @return Faculty
      * @throws IsNotValid
      */
-    Long create(Faculty faculty) throws IsNotValid;
+    Faculty create(Faculty faculty) throws IsNotValid;
 
     /**
      * Read faculty
@@ -37,8 +37,8 @@ public interface FacultyService {
     /**
      * Update faculty
      *
-     * @param name
-     * @param color
+     * @param id
+     * @param faculty
      * @return Faculty
      * @throws AlreadyAddedException
      * @throws IsNotValid
@@ -64,5 +64,5 @@ public interface FacultyService {
      * @throws IsNotValid
      * @throws NotFoundException
      */
-    HashMap<Long, Faculty> filterByColor(String color) throws NotFoundException;
+    Collection<Faculty> filterByColor(String color) throws NotFoundException;
 }

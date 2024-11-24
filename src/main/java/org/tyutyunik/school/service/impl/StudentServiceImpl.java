@@ -1,59 +1,85 @@
 package org.tyutyunik.school.service.impl;
 
 import org.springframework.stereotype.Service;
-import org.tyutyunik.school.exceptions.AlreadyAddedException;
-import org.tyutyunik.school.exceptions.IsNotValid;
 import org.tyutyunik.school.exceptions.NotFoundException;
 import org.tyutyunik.school.model.Student;
+import org.tyutyunik.school.repository.StudentRepository;
 import org.tyutyunik.school.service.StudentService;
 
 import java.util.Collection;
-import java.util.HashMap;
-
-import static java.util.Collections.unmodifiableCollection;
 
 @Service
 public class StudentServiceImpl implements StudentService {
-    private final HashMap<Long, Student> storageStudent = new HashMap<>();
-    private long idCount = 0;
+    private final StudentRepository studentRepository;
+
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     @Override
-    public Long create(Student student) {
-        student.setId(++idCount);
-        storageStudent.put(idCount, student);
-        return idCount;
+    public Student create(Student student) {
+        return studentRepository.save(student);
     }
 
     @Override
     public Student read(Long id) {
-        return storageStudent.get(id);
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(this.getClass(), id));
     }
 
     @Override
-    public Student update(Long id, Student student) throws AlreadyAddedException, IsNotValid, NotFoundException {
-        checkStudentExist(id);
-        return storageStudent.put(id, student);
+    public Student update(Long id, Student student) {
+        // todo (v2) the lighter implementation of update
+        /*return studentRepository.findById(id)
+                .map(studentForUpdate -> {
+                    studentRepository.save(student);
+                    return student;
+                })
+                .orElseThrow(() -> new NotFoundException(id));*/
+        // todo (v1) can be replaced with the lighter implementation of update
+        if (!studentRepository.existsById(id)) {
+            throw new NotFoundException(this.getClass(), id);
+        }
+        student.setId(id);
+        studentRepository.save(student);
+        return student;
     }
 
     @Override
     public Student delete(Long id) {
-        checkStudentExist(id);
-        return storageStudent.remove(id);
+        // todo (v2) the lighter implementation of delete
+        /*return studentRepository.findById(id)
+                .map(student -> {
+                    studentRepository.deleteById(id);
+                    return student;
+                })
+                .orElseThrow(() -> new NotFoundException(id));*/
+        // todo (v1) can be replaced with the lighter implementation of delete
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(this.getClass(), id));
+        studentRepository.deleteById(student.getId());
+        return student;
     }
 
     @Override
     public Collection<Student> readAll() {
-        return unmodifiableCollection(storageStudent.values());
+        return studentRepository.findAll()
+                .stream()
+                .toList();
     }
 
     @Override
-    public HashMap<Long, Student> filterByAge(int age) {
-        return null;
+    public Collection<Student> filterByAge(int age) {
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> student.getAge() == age)
+                .toList();
     }
 
-    private void checkStudentExist(long id) {
-        if (!storageStudent.containsKey(id)) {
-            throw new NotFoundException();
-        }
+    public Collection<Student> filterByAgeBetween(int ageMin, int ageMax) {
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> student.getAge() >= ageMin && student.getAge() <= ageMax)
+                .toList();
     }
 }

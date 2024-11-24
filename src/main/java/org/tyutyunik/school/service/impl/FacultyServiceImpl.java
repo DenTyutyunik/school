@@ -5,56 +5,78 @@ import org.tyutyunik.school.exceptions.AlreadyAddedException;
 import org.tyutyunik.school.exceptions.IsNotValid;
 import org.tyutyunik.school.exceptions.NotFoundException;
 import org.tyutyunik.school.model.Faculty;
+import org.tyutyunik.school.model.Student;
+import org.tyutyunik.school.repository.FacultyRepository;
 import org.tyutyunik.school.service.FacultyService;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 import static java.util.Collections.unmodifiableCollection;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
-    private final HashMap<Long, Faculty> storageFaculty = new HashMap<>();
-    private long idCount = 0;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     @Override
-    public Long create(Faculty faculty) {
-        faculty.setId(++idCount);
-        storageFaculty.put(idCount, faculty);
-        return idCount;
+    public Faculty create(Faculty faculty) {
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public Faculty read(Long id) throws IsNotValid, NotFoundException {
-        checkFacultyExist(id);
-        return storageFaculty.get(id);
+        return facultyRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(this.getClass(), id));
     }
 
     @Override
     public Faculty update(Long id, Faculty faculty) throws AlreadyAddedException, IsNotValid, NotFoundException {
-        checkFacultyExist(id);
-        return storageFaculty.put(id, faculty);
+        // todo (v2) the lighter implementation of update
+        /*return facultyRepository.findById(id)
+                .map(facultyForUpdate -> {
+                    facultyRepository.save(faculty);
+                    return faculty;
+                })
+                .orElseThrow(() -> new NotFoundException(id));*/
+        // todo (v1) can be replaced with the lighter implementation of update
+        if (!facultyRepository.existsById(id)) {
+            throw new NotFoundException(this.getClass(), id);
+        }
+        faculty.setId(id);
+        facultyRepository.save(faculty);
+        return faculty;
     }
 
     @Override
     public Faculty delete(Long id) throws IsNotValid, NotFoundException {
-        checkFacultyExist(id);
-        return storageFaculty.remove(id);
+        // todo (v2) the lighter implementation of delete
+        /*return facultyRepository.findById(id)
+                .map(facultyForUpdate -> {
+                    facultyRepository.deleteById(id);
+                    return faculty;
+                })
+                .orElseThrow(() -> new NotFoundException(id));*/
+        // todo (v1) can be replaced with the lighter implementation of delete
+        Faculty faculty = facultyRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(this.getClass(), id));
+        facultyRepository.deleteById(faculty.getId());
+        return faculty;
     }
 
     @Override
     public Collection<Faculty> readAll() {
-        return unmodifiableCollection(storageFaculty.values());
+        return facultyRepository.findAll()
+                .stream()
+                .toList();
     }
 
-    @Override
-    public HashMap<Long, Faculty> filterByColor(String color) {
-        return null;
-    }
-
-    private void checkFacultyExist(long id) {
-        if (!storageFaculty.containsKey(id)) {
-            throw new NotFoundException();
-        }
+    public Collection<Faculty> filterByColor(String color) {
+        return facultyRepository.findAll()
+                .stream()
+                .filter(faculty -> faculty.getColor().equals(color))
+                .toList();
     }
 }
