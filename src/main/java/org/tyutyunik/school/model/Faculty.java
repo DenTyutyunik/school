@@ -1,16 +1,28 @@
 package org.tyutyunik.school.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "faculty")
 public class Faculty {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String color;
 
-    public Faculty(Long id, String name, String color) {
-        this.id = id;
+    public Faculty(/*Long id, */String name, String color) {
+        //this.id = id;
         this.name = name;
         this.color = color;
+    }
+
+    public Faculty() {
+
     }
 
     public Long getId() {

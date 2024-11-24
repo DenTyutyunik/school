@@ -17,7 +17,7 @@ public class StudentController {
     }
 
     @PostMapping("/create")
-    public Long create(@RequestBody Student student) {
+    public Student create(@RequestBody Student student) {
         return studentService.create(student);
     }
 
@@ -43,7 +43,7 @@ public class StudentController {
     }
 
     @GetMapping("/filterByAge")
-    public HashMap<Long, Student> filterByAge(@RequestParam("age") int age) {
+    public Collection<Student> filterByAge(@RequestParam("age") int age) {
         return studentService.filterByAge(age);
     }
 }

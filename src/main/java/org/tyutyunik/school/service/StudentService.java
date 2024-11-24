@@ -14,7 +14,7 @@ public interface StudentService {
      * @return Student
      * @throws IsNotValid
      */
-    Long create(Student student) throws IsNotValid;
+    Student create(Student student) throws IsNotValid;
 
     /**
      * Read student
@@ -37,6 +37,7 @@ public interface StudentService {
     /**
      * Update student
      *
+     * @param id
      * @param student
      * @return Student
      * @throws AlreadyAddedException
@@ -62,5 +63,5 @@ public interface StudentService {
      * @return HashMap of [Long,Student]
      * @throws NotFoundException
      */
-    HashMap<Long, Student> filterByAge(int age) throws NotFoundException;
+    Collection<Student> filterByAge(int age) throws NotFoundException;
 }

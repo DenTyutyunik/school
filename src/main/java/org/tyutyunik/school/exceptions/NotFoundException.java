@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Not Found Exception")
 public class NotFoundException extends RuntimeException {
-    public NotFoundException() {
-        super("[EXCEPTION] Not Found");
+    public NotFoundException(Class<?> className, Long id) {
+        super("[EXCEPTION] [%s]: Not Found by id [%s]".formatted(className.getSimpleName(), id));
     }
 }
