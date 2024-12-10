@@ -47,21 +47,31 @@ public interface StudentService {
     Student update(Long id, Student student) throws AlreadyAddedException, IsNotValid, NotFoundException;
 
     /**
-     * Delete faculty
+     * Delete student
      *
      * @param id
-     * @return Faculty
+     * @return Student
      * @throws IsNotValid
      * @throws NotFoundException
      */
     Student delete(Long id) throws IsNotValid, NotFoundException;
 
     /**
-     * Filter student by
+     * Filter student by age
      *
      * @param age
-     * @return HashMap of [Long,Student]
+     * @return Collection of Student
      * @throws NotFoundException
      */
     Collection<Student> filterByAge(int age) throws NotFoundException;
+
+    /**
+     * Filter student by age between
+     *
+     * @param ageMin
+     * @param ageMax
+     * @return Collection of Student
+     * @throws NotFoundException
+     */
+    Collection<Student> filterByAgeBetween(int ageMin, int ageMax) throws NotFoundException;
 }

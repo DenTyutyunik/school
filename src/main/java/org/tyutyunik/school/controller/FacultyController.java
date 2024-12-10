@@ -46,4 +46,9 @@ public class FacultyController {
     public Collection<Faculty> filterByAge(@RequestParam("color") String color) {
         return facultyService.filterByColor(color);
     }
+
+    @GetMapping("/filterByName")
+    public Collection<Faculty> filterByName(@RequestParam("name") String name) {
+        return facultyService.filterByName(name);
+    }
 }

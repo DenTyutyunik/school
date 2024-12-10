@@ -60,9 +60,19 @@ public interface FacultyService {
      * Filter faculty by
      *
      * @param color
-     * @return HashMap of [Long,Faculty]
+     * @return Collection of Faculty
      * @throws IsNotValid
      * @throws NotFoundException
      */
-    Collection<Faculty> filterByColor(String color) throws NotFoundException;
+    Collection<Faculty> filterByColor(String color) throws IsNotValid, NotFoundException;
+
+    /**
+     * Filter faculty by
+     *
+     * @param name
+     * @return Collection of Faculty
+     * @throws IsNotValid
+     * @throws NotFoundException
+     */
+    Collection<Faculty> filterByName(String name) throws IsNotValid, NotFoundException;
 }
