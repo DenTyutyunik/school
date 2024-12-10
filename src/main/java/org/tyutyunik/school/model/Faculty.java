@@ -1,28 +1,47 @@
 package org.tyutyunik.school.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "faculty")
 public class Faculty {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String color;
+    @OneToMany(mappedBy = "faculty")
+    @JsonIgnore
+    private List<Student> students;
 
-    public Faculty(/*Long id, */String name, String color) {
-        //this.id = id;
+    public Faculty(String name, String color) {
         this.name = name;
         this.color = color;
     }
 
+    public Faculty(/*Long id, */String name, String color, List<Student> students) {
+        //this.id = id;
+        this.name = name;
+        this.color = color;
+        this.students = students;
+    }
+
     public Faculty() {
 
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     public Long getId() {
