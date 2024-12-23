@@ -75,7 +75,7 @@ class FacultyControllerWithWebMvcTest {
         Faculty faculty = new Faculty("Fakulte", "Navy blue");
         Long id = 1L;
         faculty.setId(id);
-        when(facultyRepository.findById(id)).thenReturn(Optional.of(faculty));
+        when(facultyRepository.existsById(id)).thenReturn(true);
 
         Faculty facultyNew = new Faculty("Faculty", "Deep blue");
         facultyNew.setId(id);

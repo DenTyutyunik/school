@@ -77,7 +77,7 @@ public class StudentControllerWithWebMvcTest {
         Student student = new Student("Iskander", 20);
         Long id = 1L;
         student.setId(id);
-        when(studentRepository.findById(id)).thenReturn(Optional.of(student));
+        when(studentRepository.existsById(id)).thenReturn(true);
 
         Student studentNew = new Student("Alexandr", 25);
         studentNew.setId(id);
