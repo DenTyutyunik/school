@@ -2,16 +2,13 @@ package org.tyutyunik.school.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.tyutyunik.school.exceptions.AlreadyAddedException;
-import org.tyutyunik.school.exceptions.IsNotValid;
+import org.tyutyunik.school.exceptions.IsNotValidException;
 import org.tyutyunik.school.exceptions.NotFoundException;
 import org.tyutyunik.school.model.Faculty;
-import org.tyutyunik.school.model.Student;
 import org.tyutyunik.school.repository.FacultyRepository;
 import org.tyutyunik.school.service.FacultyService;
 
 import java.util.Collection;
-
-import static java.util.Collections.unmodifiableCollection;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -27,13 +24,13 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty read(Long id) throws IsNotValid, NotFoundException {
+    public Faculty read(Long id) throws IsNotValidException, NotFoundException {
         return facultyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(this.getClass(), id));
     }
 
     @Override
-    public Faculty update(Long id, Faculty faculty) throws AlreadyAddedException, IsNotValid, NotFoundException {
+    public Faculty update(Long id, Faculty faculty) throws AlreadyAddedException, IsNotValidException, NotFoundException {
         // todo (v2) the lighter implementation of update
         /*return facultyRepository.findById(id)
                 .map(facultyForUpdate -> {
@@ -51,7 +48,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty delete(Long id) throws IsNotValid, NotFoundException {
+    public Faculty delete(Long id) throws IsNotValidException, NotFoundException {
         // todo (v2) the lighter implementation of delete
         /*return facultyRepository.findById(id)
                 .map(facultyForUpdate -> {
