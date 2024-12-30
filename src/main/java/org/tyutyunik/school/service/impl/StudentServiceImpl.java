@@ -114,7 +114,7 @@ public class StudentServiceImpl implements StudentService {
                 .toList();*/
     }
 
-    public Boolean findByName(String name) {
+    private Boolean findByName(String name) {
         return studentRepository.findAll()
                 .stream()
                 .anyMatch(student -> student.getName().equalsIgnoreCase(name));

@@ -96,13 +96,13 @@ public class FacultyServiceImpl implements FacultyService {
                 .toList();
     }
 
-    public Boolean findByName(String name) {
+    private Boolean findByName(String name) {
         return facultyRepository.findAll()
                 .stream()
                 .anyMatch(faculty -> faculty.getName().equalsIgnoreCase(name));
     }
 
-    public Boolean findByColor(String name) {
+    private Boolean findByColor(String name) {
         return facultyRepository.findAll()
                 .stream()
                 .anyMatch(faculty -> faculty.getColor().equalsIgnoreCase(name));
