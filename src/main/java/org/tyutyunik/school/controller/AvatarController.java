@@ -43,7 +43,7 @@ public class AvatarController {
     }
 
     @GetMapping(value = "/page")
-    public ResponseEntity<Page<Avatar>> getAvatars(Pageable pageable) {
+    public ResponseEntity<Page<Avatar>> getAvatars(@RequestParam Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(avatarService.getPage(pageable));
     }

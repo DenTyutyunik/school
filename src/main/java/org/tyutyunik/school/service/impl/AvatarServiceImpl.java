@@ -136,6 +136,6 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Page<Avatar> getPage(Pageable pageable) {
-        return avatarRepository.findAll(Pageable.unpaged());
+        return avatarRepository.findAll(pageable);
     }
 }
