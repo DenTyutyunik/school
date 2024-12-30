@@ -20,6 +20,18 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty create(Faculty faculty) {
+        if (faculty.getName().isEmpty()) {
+            throw new IsNotValidException(FacultyService.class, faculty.getId(), "Name must not be null");
+        }
+        if (faculty.getColor().isEmpty()) {
+            throw new IsNotValidException(FacultyService.class, faculty.getId(), "Color must not be null");
+        }
+        if (findByName(faculty.getName())) {
+            throw new IsNotValidException(FacultyService.class, faculty.getId(), "Name must be unique");
+        }
+        if (findByColor(faculty.getColor())) {
+            throw new IsNotValidException(FacultyService.class, faculty.getId(), "Name must be unique");
+        }
         return facultyRepository.save(faculty);
     }
 
@@ -82,5 +94,17 @@ public class FacultyServiceImpl implements FacultyService {
                 .stream()
                 .filter(faculty -> faculty.getName().equalsIgnoreCase(name))
                 .toList();
+    }
+
+    private Boolean findByName(String name) {
+        return facultyRepository.findAll()
+                .stream()
+                .anyMatch(faculty -> faculty.getName().equalsIgnoreCase(name));
+    }
+
+    private Boolean findByColor(String name) {
+        return facultyRepository.findAll()
+                .stream()
+                .anyMatch(faculty -> faculty.getColor().equalsIgnoreCase(name));
     }
 }
