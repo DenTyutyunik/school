@@ -1,6 +1,7 @@
 package org.tyutyunik.school.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.tyutyunik.school.exceptions.IsNotValidException;
 import org.tyutyunik.school.exceptions.NotFoundException;
 import org.tyutyunik.school.model.Student;
 import org.tyutyunik.school.repository.StudentRepository;
@@ -18,6 +19,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student create(Student student) {
+        if (student.getAge() == 0) {
+            student.setAge(20);
+        }
+        if (student.getAge() < 16) {
+            throw new IsNotValidException(StudentService.class, student.getId(), "Age must not be less than 16");
+        }
+        if (student.getName().isEmpty()) {
+            throw new IsNotValidException(StudentService.class, student.getId(), "Name must not be null");
+        }
+        if (findByName(student.getName())) {
+            throw new IsNotValidException(StudentService.class, student.getId(), "Name must be unique");
+        }
         return studentRepository.save(student);
     }
 
@@ -99,5 +112,11 @@ public class StudentServiceImpl implements StudentService {
                 .stream()
                 .filter(student -> student.getAge() >= ageMin && student.getAge() <= ageMax)
                 .toList();*/
+    }
+
+    public Boolean findByName(String name) {
+        return studentRepository.findAll()
+                .stream()
+                .anyMatch(student -> student.getName().equalsIgnoreCase(name));
     }
 }
