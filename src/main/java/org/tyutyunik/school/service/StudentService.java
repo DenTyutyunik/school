@@ -1,77 +1,57 @@
 package org.tyutyunik.school.service;
 
-import org.tyutyunik.school.exceptions.*;
 import org.tyutyunik.school.model.Student;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 public interface StudentService {
     /**
      * Create student
-     *
-     * @param student
-     * @return Student
-     * @throws IsNotValid
      */
-    Student create(Student student) throws IsNotValid;
+    Student create(Student student);
 
     /**
      * Read student
-     *
-     * @param id
-     * @return Student
-     * @throws IsNotValid
-     * @throws NotFoundException
      */
-    Student read(Long id) throws IsNotValid, NotFoundException;
+    Student read(Long id);
 
     /**
-     * Read everything student
-     *
-     * @return Collection of Student
-     * @throws NotFoundException
+     * Read everyone student
      */
-    Collection<Student> readAll() throws NotFoundException;
+    Collection<Student> readAll();
+
+    /**
+     * Read the 5 last student
+     */
+    Collection<Student> readLast5();
 
     /**
      * Update student
-     *
-     * @param id
-     * @param student
-     * @return Student
-     * @throws AlreadyAddedException
-     * @throws IsNotValid
-     * @throws NotFoundException
      */
-    Student update(Long id, Student student) throws AlreadyAddedException, IsNotValid, NotFoundException;
+    Student update(Long id, Student student);
 
     /**
      * Delete student
-     *
-     * @param id
-     * @return Student
-     * @throws IsNotValid
-     * @throws NotFoundException
      */
-    Student delete(Long id) throws IsNotValid, NotFoundException;
+    Student delete(Long id);
+
+    /**
+     * Count everyone student
+     */
+    Long countAll();
+
+    /**
+     * Get average age of everyone student
+     */
+    Long ageAvg();
 
     /**
      * Filter student by age
-     *
-     * @param age
-     * @return Collection of Student
-     * @throws NotFoundException
      */
-    Collection<Student> filterByAge(int age) throws NotFoundException;
+    Collection<Student> filterByAge(int age);
 
     /**
      * Filter student by age between
-     *
-     * @param ageMin
-     * @param ageMax
-     * @return Collection of Student
-     * @throws NotFoundException
      */
-    Collection<Student> filterByAgeBetween(int ageMin, int ageMax) throws NotFoundException;
+    Collection<Student> filterByAgeBetween(int ageMin, int ageMax);
 }

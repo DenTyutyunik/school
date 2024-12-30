@@ -28,6 +28,18 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Collection<Student> readAll() {
+        return studentRepository.findAll()
+                .stream()
+                .toList();
+    }
+
+    @Override
+    public Collection<Student> readLast5() {
+        return studentRepository.readLast5();
+    }
+
+    @Override
     public Student update(Long id, Student student) {
         // todo (v2) the lighter implementation of update
         /*return studentRepository.findById(id)
@@ -62,10 +74,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Collection<Student> readAll() {
-        return studentRepository.findAll()
-                .stream()
-                .toList();
+    public Long countAll() {
+        return studentRepository.countAll();
+    }
+
+    @Override
+    public Long ageAvg() {
+        return studentRepository.ageAvg();
     }
 
     @Override
@@ -76,10 +91,13 @@ public class StudentServiceImpl implements StudentService {
                 .toList();
     }
 
+    @Override
     public Collection<Student> filterByAgeBetween(int ageMin, int ageMax) {
-        return studentRepository.findAll()
+        return studentRepository.findByAgeBetween(ageMin, ageMax);
+        // v1
+        /*return studentRepository.findAll()
                 .stream()
                 .filter(student -> student.getAge() >= ageMin && student.getAge() <= ageMax)
-                .toList();
+                .toList();*/
     }
 }

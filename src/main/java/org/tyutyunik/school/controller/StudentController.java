@@ -5,7 +5,6 @@ import org.tyutyunik.school.model.Student;
 import org.tyutyunik.school.service.StudentService;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/student")
@@ -31,6 +30,11 @@ public class StudentController {
         return studentService.readAll();
     }
 
+    @GetMapping("/read/last5")
+    public Collection<Student> readLast5() {
+        return studentService.readLast5();
+    }
+
     @PutMapping("/update/{id}")
     public Student update(@PathVariable("id") Long id,
                           @RequestBody Student student) {
@@ -40,6 +44,16 @@ public class StudentController {
     @DeleteMapping("/delete/{id}")
     public Student deleteById(@PathVariable("id") Long id) {
         return studentService.delete(id);
+    }
+
+    @GetMapping("/count/all")
+    public Long countAll() {
+        return studentService.countAll();
+    }
+
+    @GetMapping("/age/avg")
+    public Long ageAvg() {
+        return studentService.ageAvg();
     }
 
     @GetMapping("/filterByAge")
