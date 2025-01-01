@@ -1,5 +1,7 @@
 package org.tyutyunik.school.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.tyutyunik.school.exceptions.AlreadyAddedException;
 import org.tyutyunik.school.exceptions.IsNotValidException;
@@ -18,8 +20,11 @@ public class FacultyServiceImpl implements FacultyService {
         this.facultyRepository = facultyRepository;
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
+
     @Override
     public Faculty create(Faculty faculty) {
+        logger.info("[INFO] [FacultyService] Was invoked create()");
         if (faculty.getName().isEmpty()) {
             throw new IsNotValidException(FacultyService.class, faculty.getId(), "Name must not be null");
         }
@@ -37,12 +42,14 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty read(Long id) throws IsNotValidException, NotFoundException {
+        logger.info("[INFO] [FacultyService] Was invoked read()");
         return facultyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(this.getClass(), id));
     }
 
     @Override
     public Faculty update(Long id, Faculty faculty) throws AlreadyAddedException, IsNotValidException, NotFoundException {
+        logger.info("[INFO] [FacultyService] Was invoked update()");
         // todo (v2) the lighter implementation of update
         /*return facultyRepository.findById(id)
                 .map(facultyForUpdate -> {
@@ -61,6 +68,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty delete(Long id) throws IsNotValidException, NotFoundException {
+        logger.info("[INFO] [FacultyService] Was invoked delete()");
         // todo (v2) the lighter implementation of delete
         /*return facultyRepository.findById(id)
                 .map(facultyForUpdate -> {
@@ -77,12 +85,14 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Collection<Faculty> readAll() {
+        logger.info("[INFO] [FacultyService] Was invoked readAll()");
         return facultyRepository.findAll()
                 .stream()
                 .toList();
     }
 
     public Collection<Faculty> filterByColor(String color) {
+        logger.info("[INFO] [FacultyService] Was invoked filterByColor()");
         return facultyRepository.findAll()
                 .stream()
                 .filter(faculty -> faculty.getColor().equalsIgnoreCase(color))
@@ -90,6 +100,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     public Collection<Faculty> filterByName(String name) {
+        logger.info("[INFO] [FacultyService] Was invoked filterByName()");
         return facultyRepository.findAll()
                 .stream()
                 .filter(faculty -> faculty.getName().equalsIgnoreCase(name))
