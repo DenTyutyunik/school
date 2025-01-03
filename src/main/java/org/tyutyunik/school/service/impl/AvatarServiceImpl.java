@@ -1,5 +1,7 @@
 package org.tyutyunik.school.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,8 +42,11 @@ public class AvatarServiceImpl implements AvatarService {
         this.pathDir = pathDir;
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
+
     @Override
     public long addAvatar(long studentId, MultipartFile multipartFile) {
+        logger.info("[INFO] [AvatarService] Was invoked addAvatar");
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new NotFoundException(Avatar.class, studentId));
         if (multipartFile == null) {
@@ -55,14 +60,16 @@ public class AvatarServiceImpl implements AvatarService {
     @Transactional(readOnly = true)
     // Avoid org.postgresql.util.PSQLException: Large Objects may not be used in auto-commit mode.
     public Avatar getAvatarFromDb(long studentId) {
+        logger.info("[INFO] [AvatarService] Was invoked getAvatarFromDb()");
         return Optional.ofNullable(avatarRepository.findByStudentId(studentId))
-                .orElseThrow(() -> new NotFoundException(AvatarService.class, studentId));//RuntimeException("avatar not found by student id"));
+                .orElseThrow(() -> new NotFoundException(AvatarService.class, studentId));
     }
 
     @Override
     @Transactional(readOnly = true)
     // Avoid org.postgresql.util.PSQLException: Large Objects may not be used in auto-commit mode.
     public AvatarDto getAvatarFromLocal(long studentId) {
+        logger.info("[INFO] [AvatarService] Was invoked getAvatarFromLocal()");
         Avatar avatar = avatarRepository.findByStudentId(studentId);
         if (avatar == null) {
             throw new NotFoundException(AvatarService.class, studentId);
@@ -75,10 +82,12 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     private Path saveLocal(MultipartFile multipartFile) {
+        logger.info("[INFO] [AvatarService] Was invoked saveLocal()");
         if (Files.notExists(pathDir)) {
             try {
                 Files.createDirectories(pathDir);
             } catch (IOException e) {
+                logger.error("[ERROR] [AvatarService] Files.createDirectories IOException");
                 throw new RuntimeException(e);
             }
         }
@@ -92,6 +101,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     private String getExtension(MultipartFile multipartFile) {
+        logger.info("[INFO] [AvatarService] Was invoked getExtension()");
         if (multipartFile.getOriginalFilename() == null) {
             throw new IsNotValidException(AvatarService.class, null, "File format");
         }
@@ -99,6 +109,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     private long saveBD(Student student, MultipartFile multipartFile, Path path) {
+        logger.info("[INFO] [AvatarService] Was invoked saveBD()");
         byte[] multipartFileSize;
 
         try {
@@ -119,7 +130,8 @@ public class AvatarServiceImpl implements AvatarService {
         try {
             avatarExisting = avatarRepository.findByStudentId(student.getId());
         } catch (Exception e) {
-            throw new RuntimeException("[EXCEPTION] Trying to search in the database");
+            logger.error("[ERROR] [AvatarService] Trying to search in the database");
+            throw new RuntimeException("[EXCEPTION] [AvatarService] Trying to search in the database");
         }
 
         if (avatarExisting != null) {
@@ -136,6 +148,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Page<Avatar> getPage(Pageable pageable) {
+        logger.info("[INFO] [AvatarService] Was invoked getPage()");
         return avatarRepository.findAll(pageable);
     }
 }

@@ -26,6 +26,14 @@ public class MyConfiguration {
     }
 
     @Bean
+    public GroupedOpenApi infoGroup() {
+        return GroupedOpenApi.builder()
+                .group("Info")
+                .pathsToMatch("/info/**")
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi facultyGroup() {
         return GroupedOpenApi.builder()
                 .group("Faculty")
