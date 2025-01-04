@@ -39,4 +39,9 @@ public interface FacultyService {
      * Filter faculty by name
      */
     Collection<Faculty> filterByName(String name);
+
+    /**
+     * Filter faculty by longest name
+     */
+    Faculty filterByNameLongest();
 }

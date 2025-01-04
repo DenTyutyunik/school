@@ -9,6 +9,7 @@ import org.tyutyunik.school.repository.FacultyRepository;
 import org.tyutyunik.school.service.FacultyService;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -94,6 +95,15 @@ public class FacultyServiceImpl implements FacultyService {
                 .stream()
                 .filter(faculty -> faculty.getName().equalsIgnoreCase(name))
                 .toList();
+    }
+
+    @Override
+    public Faculty filterByNameLongest() {
+        return facultyRepository.findAll()
+                .stream()
+                .parallel()
+                .max(Comparator.comparingInt(faculty -> faculty.getName().length()))
+                .orElse(null);
     }
 
     private Boolean findByName(String name) {

@@ -46,6 +46,16 @@ public interface StudentService {
     Long ageAvg();
 
     /**
+     * Get average age of everyone student (Stream)
+     */
+    Long ageAvg2();
+
+    /**
+     * Filter student by name starting with A and sorting by alphabetical order
+     */
+    Collection<Student> filterByNameAlphabeticalOrderStartingWithA();
+
+    /**
      * Filter student by age
      */
     Collection<Student> filterByAge(int age);
@@ -54,4 +64,14 @@ public interface StudentService {
      * Filter student by age between
      */
     Collection<Student> filterByAgeBetween(int ageMin, int ageMax);
+
+    /**
+     * Doesn't matter
+     */
+    Integer doesNotMatter();
+
+    /**
+     * Doesn't matter version 2 optimized
+     */
+    Integer doesNotMatter2();
 }

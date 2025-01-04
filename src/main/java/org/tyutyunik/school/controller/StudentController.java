@@ -56,6 +56,16 @@ public class StudentController {
         return studentService.ageAvg();
     }
 
+    @GetMapping("/age/avg2")
+    public Long ageAvgStream() {
+        return studentService.ageAvg2();
+    }
+
+    @GetMapping("/filterByNameAlphabeticalOrderStartingWithA")
+    public Collection<Student> filterByNameAlphabeticalOrderStartingWithA() {
+        return studentService.filterByNameAlphabeticalOrderStartingWithA();
+    }
+
     @GetMapping("/filterByAge")
     public Collection<Student> filterByAge(@RequestParam("age") int age) {
         return studentService.filterByAge(age);
@@ -65,5 +75,15 @@ public class StudentController {
     public Collection<Student> filterByAgeBetween(@RequestParam("minAge") int minAge,
                                                   @RequestParam("maxAge") int maxAge) {
         return studentService.filterByAgeBetween(minAge, maxAge);
+    }
+
+    @GetMapping("/doesNotMatter")
+    public Integer doesNotMatter() {
+        return studentService.doesNotMatter();
+    }
+
+    @GetMapping("/doesNotMatter2")
+    public Integer doesNotMatter2() {
+        return studentService.doesNotMatter2();
     }
 }

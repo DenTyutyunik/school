@@ -5,7 +5,6 @@ import org.tyutyunik.school.model.Faculty;
 import org.tyutyunik.school.service.FacultyService;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/faculty")
@@ -50,5 +49,10 @@ public class FacultyController {
     @GetMapping("/filterByName")
     public Collection<Faculty> filterByName(@RequestParam("name") String name) {
         return facultyService.filterByName(name);
+    }
+
+    @GetMapping("/filterByNameLongest")
+    public Faculty filterByNameLongest() {
+        return facultyService.filterByNameLongest();
     }
 }
