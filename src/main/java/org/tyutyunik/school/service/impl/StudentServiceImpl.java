@@ -11,18 +11,18 @@ import org.tyutyunik.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Service
 public class StudentServiceImpl implements StudentService {
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     private final StudentRepository studentRepository;
 
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     @Override
     public Student create(Student student) {
@@ -167,6 +167,62 @@ public class StudentServiceImpl implements StudentService {
                 .rangeClosed(1, 1_000_000)
                 .parallel()
                 .sum();
+    }
+
+    @Override
+    public Collection<Student> readAllParallel() {
+        logger.info("Was invoked student.readAllParallel()");
+        List<Student> students = studentRepository.findAll()
+                .stream()
+                .limit(6)
+                .toList();
+        if (students.size() < 6) {
+            throw new IsNotValidException(this.getClass(), null, "Number of students less than 6");
+        }
+
+        printStudents(students, 0, 1);
+
+        Thread thread23 = new Thread(() -> printStudents(students, 2, 3));
+        Thread thread45 = new Thread(() -> printStudents(students, 4, 5));
+
+        thread23.start();
+        thread45.start();
+
+        return students;
+    }
+
+    @Override
+    public Collection<Student> readAllSynchronized() {
+        logger.info("Was invoked student.readAllSynchronized()");
+        List<Student> students = studentRepository.findAll()
+                .stream()
+                .limit(6)
+                .toList();
+        if (students.size() < 6) {
+            throw new IsNotValidException(this.getClass(), null, "Number of students less than 6");
+        }
+
+        printStudents(students, 0, 1);
+
+        Thread thread23 = new Thread(() -> printStudentsSynchronized(students, 2, 3));
+        Thread thread45 = new Thread(() -> printStudentsSynchronized(students, 4, 5));
+
+        thread23.start();
+        thread45.start();
+
+        return students;
+    }
+
+    private void printStudents(List<Student> students, int studentId1, int studentId2) {
+        System.out.printf("student%s = %s\n", studentId1, students.get(studentId1));
+        System.out.printf("student%s = %s\n", studentId2, students.get(studentId2));
+    }
+
+    private void printStudentsSynchronized(List<Student> students, int studentId1, int studentId2) {
+        synchronized (this) {
+            System.out.printf("student%s = %s\n", studentId1, students.get(studentId1));
+            System.out.printf("student%s = %s\n", studentId2, students.get(studentId2));
+        }
     }
 
     private Boolean findByName(String name) {
