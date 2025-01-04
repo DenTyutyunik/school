@@ -183,22 +183,8 @@ public class StudentServiceImpl implements StudentService {
 
         printStudents(students, 0, 1);
 
-        Runnable runnable23 = new Runnable() {
-            @Override
-            public void run() {
-                printStudents(students, 2, 3);
-            }
-        };
-
-        Runnable runnable45 = new Runnable() {
-            @Override
-            public void run() {
-                printStudents(students, 4, 5);
-            }
-        };
-
-        Thread thread23 = new Thread(runnable23);
-        Thread thread45 = new Thread(runnable45);
+        Thread thread23 = new Thread(() -> printStudents(students, 2, 3));
+        Thread thread45 = new Thread(() -> printStudents(students, 4, 5));
 
         thread23.start();
         thread45.start();
@@ -219,22 +205,8 @@ public class StudentServiceImpl implements StudentService {
 
         printStudents(students, 0, 1);
 
-        Runnable runnable23 = new Runnable() {
-            @Override
-            public void run() {
-                printStudentsSynchronized(students, 2, 3);
-            }
-        };
-
-        Runnable runnable45 = new Runnable() {
-            @Override
-            public void run() {
-                printStudentsSynchronized(students, 4, 5);
-            }
-        };
-
-        Thread thread23 = new Thread(runnable23);
-        Thread thread45 = new Thread(runnable45);
+        Thread thread23 = new Thread(() -> printStudentsSynchronized(students, 2, 3));
+        Thread thread45 = new Thread(() -> printStudentsSynchronized(students, 4, 5));
 
         thread23.start();
         thread45.start();
