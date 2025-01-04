@@ -17,13 +17,12 @@ import java.util.stream.Stream;
 
 @Service
 public class StudentServiceImpl implements StudentService {
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     private final StudentRepository studentRepository;
 
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     @Override
     public Student create(Student student) {
