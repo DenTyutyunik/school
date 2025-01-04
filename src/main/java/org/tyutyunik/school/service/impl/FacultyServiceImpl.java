@@ -103,7 +103,7 @@ public class FacultyServiceImpl implements FacultyService {
                 .stream()
                 .parallel()
                 .max(Comparator.comparingInt(faculty -> faculty.getName().length()))
-                .orElse(null);
+                .orElseThrow(() -> new NotFoundException(FacultyService.class, null));
     }
 
     private Boolean findByName(String name) {
