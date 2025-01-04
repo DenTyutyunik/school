@@ -16,6 +16,6 @@ databaseChangeLog:
   - changeSet:
       id: idx-faculty
       author: tyutyunik
-      changes: baName-byColor
+      changes: byName-byColor
   - include:
       file: db/changelog/11-idx-faculty.sql
