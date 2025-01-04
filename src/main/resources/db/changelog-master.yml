@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tables-student-faculty-avatar
+      author: tyutyunik
+      changes: initial-commit
+  - include:
+      file: db/changelog/00-initial-commit.sql
+
+  - changeSet:
+      id: idx-student
+      author: tyutyunik
+      changes: byName
+  - include:
+      file: db/changelog/10-idx-student.sql
+
+  - changeSet:
+      id: idx-faculty
+      author: tyutyunik
+      changes: byName-byColor
+  - include:
+      file: db/changelog/11-idx-faculty.sql
