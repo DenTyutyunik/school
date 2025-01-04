@@ -86,4 +86,14 @@ public class StudentController {
     public Integer doesNotMatter2() {
         return studentService.doesNotMatter2();
     }
+
+    @GetMapping("/read/print-parallel")
+    public Collection<Student> readAllParallel() {
+        return studentService.readAllParallel();
+    }
+
+    @GetMapping("/read/print-synchronized")
+    public Collection<Student> readAllSynchronized() {
+        return studentService.readAllSynchronized();
+    }
 }

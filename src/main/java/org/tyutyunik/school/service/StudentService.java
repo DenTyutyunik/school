@@ -74,4 +74,14 @@ public interface StudentService {
      * Doesn't matter version 2 optimized
      */
     Integer doesNotMatter2();
+
+    /**
+     * Read everyone student in parallel thread
+     */
+    Collection<Student> readAllParallel();
+
+    /**
+     * Read everyone student in synchronized thread
+     */
+    Collection<Student> readAllSynchronized();
 }
