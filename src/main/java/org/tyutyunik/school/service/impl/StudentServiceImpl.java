@@ -10,6 +10,9 @@ import org.tyutyunik.school.repository.StudentRepository;
 import org.tyutyunik.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -110,6 +113,27 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Long ageAvg2() {
+        return (long) studentRepository.findAll()
+                .stream()
+                .parallel()
+                .filter(student -> student.getAge() > 0)
+                .mapToLong(Student::getAge)
+                .average()
+                .orElse(0);
+    }
+
+    @Override
+    public Collection<Student> filterByNameAlphabeticalOrderStartingWithA() {
+        return studentRepository.findAll()
+                .stream()
+                .parallel()
+                .filter(student -> student.getName().startsWith("A"))
+                .sorted(Comparator.comparing(Student::getName))
+                .toList();
+    }
+
+    @Override
     public Collection<Student> filterByAge(int age) {
         logger.info("[INFO] [StudentService] Was invoked filterByAge()");
         return studentRepository.findAll()
@@ -127,6 +151,22 @@ public class StudentServiceImpl implements StudentService {
                 .stream()
                 .filter(student -> student.getAge() >= ageMin && student.getAge() <= ageMax)
                 .toList();*/
+    }
+
+    @Override
+    public Integer doesNotMatter() {
+        return Stream
+                .iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b);
+    }
+
+    @Override
+    public Integer doesNotMatter2() {
+        return IntStream
+                .rangeClosed(1, 1_000_000)
+                .parallel()
+                .sum();
     }
 
     private Boolean findByName(String name) {
